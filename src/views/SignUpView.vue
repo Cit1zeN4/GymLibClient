@@ -95,7 +95,7 @@ function register() {
 
 <template>
   <div class="flex justify-content-center align-items-center min-h-screen">
-    <div class="surface-card p-4 shadow-2 border-round sm:max-w-8 md:max-w-7 lg:max-w-4">
+    <div class="surface-card p-4 shadow-2 border-round w-auto sm:w-8 md:w-7 lg:w-4">
       <div class="text-center mb-5">
         <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
         <span class="text-600 font-medium line-height-3">Already have an account?</span>
