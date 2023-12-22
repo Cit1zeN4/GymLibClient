@@ -7,7 +7,7 @@ const router = useRouter()
 
 const { values, errors, defineField } = useForm({
   validationSchema: yup.object({
-    email: yup.string().email('Некорректный формат email').required('Обязательное поле'),
+    email: yup.string().email('Некорректный формат').required('Обязательное поле'),
     password: yup
       .string()
       .matches(
