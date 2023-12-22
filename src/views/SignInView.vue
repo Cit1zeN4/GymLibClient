@@ -23,7 +23,7 @@ const [password, passwordAttr] = defineField<any, string>('password', {
   validateOnModelUpdate: false
 })
 
-const checked = ref(false)
+const checked = ref(true)
 const auth = authStore()
 const me = meStore()
 
@@ -31,41 +31,14 @@ function toSignUp() {
   router.push('/signup')
 }
 
-function canLogin(): Boolean {
+function canLogin(): boolean {
   const hasValidationError = errors.value.email || errors.value.password
   const hasData = email.value !== undefined && password.value !== undefined
   return !hasValidationError && hasData
 }
 
 function login() {
-  if (canLogin())
-    auth
-      .login(email.value, password.value)
-      .then(() => {
-        toast.add({
-          severity: 'success',
-          summary: 'Успех',
-          detail: 'Вы успешно авторизованы. Получаем данные профиля...',
-          closable: true,
-          life: 1000
-        })
-        me.getMe().then(() => {
-          // TODO: CHANGE
-          router.push('/')
-        })
-      })
-      .catch((error: ApiError) => {
-        if (error.status === 401)
-          toast.add({
-            severity: 'error',
-            summary: 'Ошибка',
-            detail: 'Неверный логин или пароль',
-            closable: true,
-            life: 3000
-          })
-      })
-  else {
-    console.log('ee')
+  if (!canLogin()) {
     toast.add({
       severity: 'warn',
       summary: 'Внимание',
@@ -73,7 +46,34 @@ function login() {
       closable: true,
       life: 3000
     })
+    return
   }
+
+  auth
+    .login(email.value, password.value)
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Успех',
+        detail: 'Вы успешно авторизованы. Получаем данные профиля...',
+        closable: true,
+        life: 1000
+      })
+      me.getMe().then(() => {
+        // TODO: CHANGE
+        router.push('/')
+      })
+    })
+    .catch((error: ApiError) => {
+      if (error.status === 401)
+        toast.add({
+          severity: 'error',
+          summary: 'Ошибка',
+          detail: 'Неверный логин или пароль',
+          closable: true,
+          life: 3000
+        })
+    })
 }
 </script>
 

@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
+import { authStore } from '@/stores/auth'
+import { meStore } from '@/stores/me'
 import * as yup from 'yup'
+import { useToast } from 'primevue/usetoast'
+import type { ApiError } from '@/api/codegen'
 
 const router = useRouter()
+const toast = useToast()
 
-const { values, errors, defineField } = useForm({
+const { errors, defineField } = useForm({
   validationSchema: yup.object({
     email: yup.string().email('Некорректный формат').required('Обязательное поле'),
     password: yup
@@ -33,8 +38,58 @@ const [confirmPassword, confirmPasswordAttr] = defineField('confirmPassword', {
   validateOnModelUpdate: false
 })
 
+const auth = authStore()
+const me = meStore()
+
 function toSignIn() {
   router.push('/signin')
+}
+
+function canRegister(): boolean {
+  const hasValidationError =
+    errors.value.email || errors.value.password || errors.value.confirmPassword
+  const hasData =
+    email.value !== undefined && password.value !== undefined && confirmPassword.value !== undefined
+  return !hasValidationError && hasData
+}
+
+function register() {
+  if (!canRegister()) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Внимание',
+      detail: 'Введены некорректные данные',
+      closable: true,
+      life: 3000
+    })
+    return
+  }
+
+  auth
+    .register(email.value, password.value)
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Успех',
+        detail: 'Вы успешно зарегистрированы. Получаем данные профиля...',
+        closable: true,
+        life: 1000
+      })
+      me.getMe().then(() => {
+        // TODO: CHANGE
+        router.push('/')
+      })
+    })
+    .catch((error: ApiError) => {
+      if (error.status === 401)
+        toast.add({
+          severity: 'error',
+          summary: 'Ошибка',
+          detail: 'Ошибка регистрации',
+          closable: true,
+          life: 3000
+        })
+    })
 }
 </script>
 
@@ -99,7 +154,7 @@ function toSignIn() {
           </div>
         </div>
 
-        <Button label="Sign Up" icon="pi pi-user" class="w-full"></Button>
+        <Button @click="register" label="Sign Up" icon="pi pi-user" class="w-full"></Button>
       </div>
     </div>
   </div>
