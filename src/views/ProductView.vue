@@ -5,18 +5,32 @@ import type { PageState } from 'primevue/paginator'
 import { ref } from 'vue'
 
 const productData = productStore()
-let take = ref(10)
 
-productData.load(0, take.value)
+let first = ref(0)
+let take = ref(10)
+const searchText = ref<string>()
+
+productData.load(0, take.value, undefined)
+
+function search() {
+  productData.load(0, take.value, searchText.value)
+  first.value = 0
+}
 
 function upd(event: PageState) {
-  productData.load(event.first, event.rows)
+  productData.load(event.first, event.rows, searchText.value)
 }
 </script>
 
 <template>
   <div class="mx-5">
     <h1>Продукты</h1>
+    <div class="my-2 flex justify-content-end">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search" />
+        <InputText v-model="searchText" @keyup.enter="search" placeholder="Search" />
+      </span>
+    </div>
     <div v-if="productData.isLodaded">
       <DataTable :value="productData.products?.records">
         <Column field="name" header="Название" />
@@ -37,7 +51,7 @@ function upd(event: PageState) {
         </Column>
         <Column field="kcal" header="Килокалории на 100г">
           <template #body="slotProps">
-            {{ `${slotProps.data.kcal} г.` }}
+            {{ `${slotProps.data.kcal} ккал` }}
           </template>
         </Column>
       </DataTable>
@@ -47,6 +61,7 @@ function upd(event: PageState) {
     </div>
 
     <Paginator
+      v-model:first="first"
       :rows="take"
       :totalRecords="productData.products?.totalCount"
       :rowsPerPageOptions="[10, 20, 30]"

@@ -6,14 +6,15 @@ export const productStore = defineStore('product', () => {
   const isLodaded = ref(false)
   let products = ref<ProductEntityResponseData>()
 
-  async function load(skip: number, take: number) {
+  async function load(skip: number, take: number, search: string | undefined) {
     isLodaded.value = false
     const client = new AppClient(OpenAPI)
 
     const response = await client.food.postFoodProductList({
       requestBody: {
-        skip: skip,
-        take: take
+        search,
+        skip,
+        take
       }
     })
 
