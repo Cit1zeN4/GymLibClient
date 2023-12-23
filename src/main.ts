@@ -19,6 +19,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Paginator from 'primevue/paginator'
 import ProductTableSkeleton from './components/ProductTableSkeleton.vue'
+import ExercisTableSkeleton from './components/ExercisTableSkeleton.vue'
 
 import App from './App.vue'
 import router from './router'
@@ -56,5 +57,6 @@ app.component('DataTable', DataTable)
 app.component('Column', Column)
 app.component('Paginator', Paginator)
 app.component('ProductTableSkeleton', ProductTableSkeleton)
+app.component('ExercisTableSkeleton', ExercisTableSkeleton)
 
 app.mount('#app')

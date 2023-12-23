@@ -24,43 +24,49 @@ function upd(event: PageState) {
 
 <template>
   <div class="mx-5">
-    <h1>Продукты</h1>
+    <h1 class="text-primary">Продукты</h1>
     <div class="my-2 flex justify-content-end">
       <span class="p-input-icon-left">
         <i class="pi pi-search" />
-        <InputText v-model="searchText" @keyup.enter="search" placeholder="Search" />
+        <InputText v-model="searchText" @keyup.enter="search" placeholder="Поиск" />
       </span>
     </div>
     <div v-if="productData.isLodaded">
-      <DataTable :value="productData.products?.records">
-        <Column field="name" header="Название" />
-        <Column field="proteins" header="Белки на 100г">
-          <template #body="slotProps">
-            {{ `${slotProps.data.proteins} г.` }}
-          </template>
-        </Column>
-        <Column field="fats" header="Жиры на 100г">
-          <template #body="slotProps">
-            {{ `${slotProps.data.fats} г.` }}
-          </template>
-        </Column>
-        <Column field="carbohydrates" header="Углеводы на 100г">
-          <template #body="slotProps">
-            {{ `${slotProps.data.carbohydrates} г.` }}
-          </template>
-        </Column>
-        <Column field="kcal" header="Килокалории на 100г">
-          <template #body="slotProps">
-            {{ `${slotProps.data.kcal} ккал` }}
-          </template>
-        </Column>
-      </DataTable>
+      <div v-if="productData.products?.totalCount">
+        <DataTable :value="productData.products?.records">
+          <Column field="name" header="Название" />
+          <Column field="proteins" header="Белки на 100г">
+            <template #body="slotProps">
+              {{ `${slotProps.data.proteins} г.` }}
+            </template>
+          </Column>
+          <Column field="fats" header="Жиры на 100г">
+            <template #body="slotProps">
+              {{ `${slotProps.data.fats} г.` }}
+            </template>
+          </Column>
+          <Column field="carbohydrates" header="Углеводы на 100г">
+            <template #body="slotProps">
+              {{ `${slotProps.data.carbohydrates} г.` }}
+            </template>
+          </Column>
+          <Column field="kcal" header="Килокалории на 100г">
+            <template #body="slotProps">
+              {{ `${slotProps.data.kcal} ккал` }}
+            </template>
+          </Column>
+        </DataTable>
+      </div>
+      <div v-else>
+        <h3 class="text-center color-primary">Продукты не найдены</h3>
+      </div>
     </div>
     <div v-else>
       <ProductTableSkeleton />
     </div>
 
     <Paginator
+      v-if="productData.products?.totalCount"
       v-model:first="first"
       :rows="take"
       :totalRecords="productData.products?.totalCount"
