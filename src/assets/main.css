@@ -11,3 +11,7 @@ body {
 .ltr {
     direction: ltr;
 }
+
+.pointer {
+    cursor: pointer;
+}

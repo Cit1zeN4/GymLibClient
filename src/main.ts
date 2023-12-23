@@ -15,6 +15,10 @@ import AccordionTab from 'primevue/accordiontab'
 import Avatar from 'primevue/avatar'
 import Skeleton from 'primevue/skeleton'
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Paginator from 'primevue/paginator'
+import ProductTableSkeleton from './components/ProductTableSkeleton.vue'
 
 import App from './App.vue'
 import router from './router'
@@ -25,6 +29,10 @@ import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import 'material-icons/iconfont/material-icons.css'
 import '/node_modules/primeflex/primeflex.css'
+
+OpenAPI.BASE = import.meta.env.VITE_API_HOST
+OpenAPI.WITH_CREDENTIALS = true
+
 const app = createApp(App)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -44,8 +52,9 @@ app.component('AccordionTab', AccordionTab)
 app.component('Avatar', Avatar)
 app.component('Skeleton', Skeleton)
 app.component('ArticleSkeleton', ArticleSkeleton)
+app.component('DataTable', DataTable)
+app.component('Column', Column)
+app.component('Paginator', Paginator)
+app.component('ProductTableSkeleton', ProductTableSkeleton)
 
 app.mount('#app')
-
-OpenAPI.BASE = import.meta.env.VITE_API_HOST
-OpenAPI.WITH_CREDENTIALS = true

@@ -60,7 +60,6 @@ function login() {
         life: 1000
       })
       me.getMe().then(() => {
-        // TODO: CHANGE
         router.push('/')
       })
     })
@@ -129,7 +128,7 @@ function login() {
           >
         </div>
 
-        <Button @click.prevent="login" label="Sign In" icon="pi pi-user" class="w-full"></Button>
+        <Button @click="login" label="Sign In" icon="pi pi-user" class="w-full"></Button>
       </div>
     </div>
   </div>

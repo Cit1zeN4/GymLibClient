@@ -77,7 +77,7 @@ function toProfile() {
     <template #end>
       <div class="flex align-items-center gap-2">
         <div class="flex align-items-center justify-content-center">
-          <h5 class="mr-2">{{ me.userData?.userName }}</h5>
+          <h5 @click="toProfile" class="mr-2 pointer">{{ me.userData?.userName }}</h5>
           <Button
             @click="toProfile"
             class="p-1 w-2rem h-2rem border-circle flex align-items-center justify-content-center"
@@ -92,5 +92,3 @@ function toProfile() {
 
   <RouterView />
 </template>
-
-<style scoped></style>

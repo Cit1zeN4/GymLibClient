@@ -1,3 +1,5 @@
+const { off } = require('process')
+
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution')
 
@@ -11,5 +13,8 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  rules: {
+    'vue/multi-word-component-names': off
   }
 }
