@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import type { ExerciseEntity } from '@/api/codegen'
 import { exerciseStore } from '@/stores/exercise'
 import type { PageState } from 'primevue/paginator'
 import { ref } from 'vue'
 
 const exerciseData = exerciseStore()
+
 let first = ref(0)
 let take = ref(10)
+let visible = ref(false)
+const expandedRows = ref()
+
 const searchText = ref<string>()
+let selected = ref<ExerciseEntity | undefined>()
 
 exerciseData.load(0, take.value, undefined)
 
@@ -17,6 +23,12 @@ function search() {
 
 function upd(event: PageState) {
   exerciseData.load(event.first, event.rows, searchText.value)
+}
+
+function expand() {
+  if (expandedRows.value.length > 1) {
+    expandedRows.value = expandedRows.value.slice(-1)
+  }
 }
 </script>
 
@@ -31,9 +43,23 @@ function upd(event: PageState) {
     </div>
     <div v-if="exerciseData.isLodaded">
       <div v-if="exerciseData.exercises?.totalCount">
-        <DataTable :value="exerciseData.exercises?.records">
+        <DataTable
+          dataKey="id"
+          v-model:expandedRows="expandedRows"
+          :value="exerciseData.exercises?.records"
+          @row-expand="expand"
+        >
+          <Column expander style="width: 5rem" />
           <Column field="name" header="Название" />
           <Column field="tags" header="Группы мышц" />
+          <template #expansion="slotProps">
+            <h1>{{ slotProps.data.name }}</h1>
+            <p>{{ slotProps.data.description }}</p>
+            <p>{{ slotProps.data.begginer }}</p>
+            <a :href="slotProps.data.source" class="text-primary" style="text-decoration: none"
+              >источник</a
+            >
+          </template>
         </DataTable>
       </div>
       <div v-else>

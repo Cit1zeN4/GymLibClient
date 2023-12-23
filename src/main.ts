@@ -20,6 +20,7 @@ import Column from 'primevue/column'
 import Paginator from 'primevue/paginator'
 import ProductTableSkeleton from './components/ProductTableSkeleton.vue'
 import ExercisTableSkeleton from './components/ExercisTableSkeleton.vue'
+import Dialog from 'primevue/dialog'
 
 import App from './App.vue'
 import router from './router'
@@ -58,5 +59,6 @@ app.component('Column', Column)
 app.component('Paginator', Paginator)
 app.component('ProductTableSkeleton', ProductTableSkeleton)
 app.component('ExercisTableSkeleton', ExercisTableSkeleton)
+app.component('Dialog', Dialog)
 
 app.mount('#app')
