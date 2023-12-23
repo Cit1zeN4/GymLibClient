@@ -50,14 +50,13 @@ function logout() {
           est laborum.
         </p>
       </AccordionTab>
-      <AccordionTab header="Log out">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor recusandae tempora
-          consectetur repellendus nisi ipsa ab esse ea eos, earum exercitationem impedit ullam
-          voluptate veritatis fugiat obcaecati in, sequi aliquam!
+      <AccordionTab header="Выход">
+        <p class="text-center mb-4">
+          При нажатии на кнопку "Выйти" вы совершите выход из вашего аккаунта. Вы уверены что хотите
+          выйти?
         </p>
         <div class="flex justify-content-center">
-          <Button @click="logout" severity="danger" label="Log out" icon="pi pi-sign-out" />
+          <Button @click="logout" severity="danger" label="Выйти" icon="pi pi-sign-out" />
         </div>
       </AccordionTab>
     </Accordion>
