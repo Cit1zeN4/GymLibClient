@@ -21,6 +21,10 @@ import Paginator from 'primevue/paginator'
 import ProductTableSkeleton from './components/ProductTableSkeleton.vue'
 import ExercisTableSkeleton from './components/ExercisTableSkeleton.vue'
 import Dialog from 'primevue/dialog'
+import Calendar from 'primevue/calendar'
+import InputNumber from 'primevue/inputnumber'
+import OverlayPanel from 'primevue/overlaypanel'
+import Chart from 'primevue/chart'
 
 import App from './App.vue'
 import router from './router'
@@ -60,5 +64,9 @@ app.component('Paginator', Paginator)
 app.component('ProductTableSkeleton', ProductTableSkeleton)
 app.component('ExercisTableSkeleton', ExercisTableSkeleton)
 app.component('Dialog', Dialog)
+app.component('Calendar', Calendar)
+app.component('InputNumber', InputNumber)
+app.component('OverlayPanel', OverlayPanel)
+app.component('Chart', Chart)
 
 app.mount('#app')

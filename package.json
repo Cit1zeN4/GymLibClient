@@ -16,6 +16,7 @@
   "dependencies": {
     "@vee-validate/yup": "^4.12.3",
     "axios": "^1.6.2",
+    "chart.js": "^4.4.1",
     "form-data": "^4.0.0",
     "material-icons": "^1.13.12",
     "pinia": "^2.1.7",
