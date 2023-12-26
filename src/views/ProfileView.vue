@@ -4,6 +4,9 @@ import { useRouter } from 'vue-router'
 import { authStore } from '@/stores/auth'
 import { meStore } from '@/stores/me'
 import { useToast } from 'primevue/usetoast'
+import * as yup from 'yup'
+import { useForm } from 'vee-validate'
+import type { ApiError } from '@/api/codegen'
 
 const router = useRouter()
 const auth = authStore()
@@ -11,6 +14,29 @@ const me = meStore()
 const toast = useToast()
 
 const newName = ref<string | undefined>(undefined)
+
+const { errors, defineField } = useForm({
+  validationSchema: yup.object({
+    password: yup
+      .string()
+      .matches(
+        /^(?=.*\d{1})(?=.*[a-z]{1})(?=.*[A-Z]{1})(?=.*[!@#$%^&*{|}?~_=+.-]{1})(?=.*[^a-zA-Z0-9])(?!.*\s).{6,64}$/,
+        'Пароль не соответсвует требованиям'
+      )
+      .required('Обязательное поле'),
+    confirmPassword: yup
+      .string()
+      .required('Обязательное поле')
+      .oneOf([yup.ref<string>('password'), ''], 'Пароли должны совпать'),
+    oldPassword: yup.string().required('Обязательное поле')
+  })
+})
+
+const [password, passwordAttr] = defineField('password', { validateOnModelUpdate: false })
+const [confirmPassword, confirmPasswordAttr] = defineField('confirmPassword', {
+  validateOnModelUpdate: false
+})
+const [oldPassword, oldPasswordAttr] = defineField('oldPassword', { validateOnModelUpdate: false })
 
 onMounted(() => {
   me.getMe()
@@ -52,6 +78,55 @@ function changeName() {
       })
   }
 }
+
+function changePassword(oldPassword: string, newPassword: string) {
+  console.log('start')
+  console.log(me.changePassword)
+  me.changePassword(oldPassword, newPassword)
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Сохранено',
+        detail: 'Пароль успешно обнавлен',
+        closable: true,
+        life: 1000
+      })
+    })
+    .catch((error: ApiError) => {
+      if (error.status === 401)
+        toast.add({
+          severity: 'error',
+          summary: 'Ошибка',
+          detail: 'Неверный пароль',
+          closable: true,
+          life: 3000
+        })
+      else
+        toast.add({
+          severity: 'error',
+          summary: 'Ошибка',
+          detail: 'Ошибка смены пароля',
+          closable: true,
+          life: 3000
+        })
+    })
+}
+
+const canChangePassword = computed(() => {
+  var isValid =
+    errors.value.oldPassword === undefined &&
+    errors.value.password === undefined &&
+    errors.value.confirmPassword === undefined
+
+  var isNotEmpty =
+    oldPassword.value !== undefined &&
+    oldPassword.value !== '' &&
+    password.value !== undefined &&
+    password.value !== '' &&
+    confirmPassword.value !== undefined &&
+    confirmPassword.value !== ''
+  return !(isValid && isNotEmpty)
+})
 </script>
 
 <template>
@@ -105,13 +180,33 @@ function changeName() {
             <h3>Сменить пароль</h3>
           </div>
           <div class="col-12 md:col-8 lg:col-9">
-            <div class="grid my-auto">
+            <div class="grid">
               <div class="col-12">
                 <Password
+                  toggleMask
+                  v-model="oldPassword"
+                  v-bind="oldPasswordAttr"
+                  placeholder="Введите старый пароль"
+                  class="h-full w-full"
+                  inputClass="my-auto w-full"
+                  :feedback="false"
+                  :class="{ 'p-invalid': errors.oldPassword }"
+                />
+                <small class="p-error" id="text-error">{{ errors.oldPassword || '&nbsp;' }}</small>
+              </div>
+              <div class="col-12">
+                <Password
+                  toggleMask
+                  v-model="password"
+                  v-bind="passwordAttr"
+                  weakLabel="Слишком простой"
+                  mediumLabel="Норальный"
+                  strongLabel="Отличный"
                   promptLabel="Введите новый пароль"
                   placeholder="Введите новый пароль"
-                  class="w-full"
-                  inputClass="w-full"
+                  class="h-full w-full"
+                  inputClass="my-auto w-full"
+                  :class="{ 'p-invalid': errors.password }"
                 >
                   <template #footer>
                     <Divider />
@@ -125,17 +220,30 @@ function changeName() {
                     </ul>
                   </template>
                 </Password>
+                <small class="p-error" id="text-error">{{ errors.password || '&nbsp;' }}</small>
               </div>
               <div class="col-9 md:col-10 lg:col-11">
                 <Password
+                  toggleMask
+                  v-model="confirmPassword"
+                  v-bind="confirmPasswordAttr"
                   placeholder="Подтвердите пароль"
-                  class="w-full"
-                  inputClass="w-full"
+                  class="h-full w-full"
+                  inputClass="my-auto w-full"
                   :feedback="false"
+                  :class="{ 'p-invalid': errors.confirmPassword }"
                 />
+                <small class="p-error" id="text-error">{{
+                  errors.confirmPassword || '&nbsp;'
+                }}</small>
               </div>
-              <div class="col-3 md:col-2 lg:col-1">
-                <Button icon="pi pi-save" class="w-full" />
+              <div class="col-3 md:col-2 lg:col-1 flex align-item-center">
+                <Button
+                  @click="changePassword(oldPassword, password)"
+                  :disabled="canChangePassword"
+                  icon="pi pi-save"
+                  class="my-auto w-full"
+                />
               </div>
             </div>
           </div>
