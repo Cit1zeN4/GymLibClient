@@ -233,8 +233,6 @@ const setChartOptions = () => {
         <div class="flex justify-content-center">
           <Calendar
             v-model="date"
-            :auto-z-index="false"
-            :base-z-index="0"
             placeholder="Введите дату"
             dateFormat="yy-mm-dd"
             class="w-9rem"
