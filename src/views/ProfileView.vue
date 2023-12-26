@@ -91,7 +91,7 @@ function changeName() {
               </div>
               <div class="col-3 md:col-2 lg:col-1">
                 <Button
-                  :disabled="newName === undefined"
+                  :disabled="newName === undefined || newName === ''"
                   @click="changeName"
                   icon="pi pi-save"
                   class="w-full"
