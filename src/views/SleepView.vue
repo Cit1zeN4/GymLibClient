@@ -24,7 +24,7 @@ const dateEndStr = computed(() =>
   dateEnd.value ? sleepData.getDateStr(new Date(dateEnd.value)) + 'T23:59:59Z' : undefined
 )
 
-const date = ref<string | undefined>()
+const date = ref<Date>()
 const hour = ref<number | undefined>()
 const minute = ref<number | undefined>()
 const op = ref()
@@ -47,8 +47,13 @@ const hide = () => {
 }
 
 const save = () => {
+  console.log(date.value)
   sleepData
-    .add(hour.value ?? 0, minute.value ?? 0, date.value)
+    .add(
+      hour.value ?? 0,
+      minute.value ?? 0,
+      sleepData.getDateStr(date.value ?? new Date(), false) + 'T12:00:00.000Z'
+    )
     .then(() => {
       toggle(null)
       toast.add({
@@ -101,6 +106,11 @@ const remove = (id: number) => {
       })
     })
 }
+
+const isData = computed(() => {
+  var result = (sleepData.sleepList?.totalCount ?? 0 > 0) && sleepData.isLoaded
+  return result
+})
 
 onMounted(() => {
   sleepData.getList(0, 50, weekAgoStr, todayStr).then(() => {
@@ -223,6 +233,8 @@ const setChartOptions = () => {
         <div class="flex justify-content-center">
           <Calendar
             v-model="date"
+            :auto-z-index="false"
+            :base-z-index="0"
             placeholder="Введите дату"
             dateFormat="yy-mm-dd"
             class="w-9rem"
@@ -250,36 +262,41 @@ const setChartOptions = () => {
         dateFormat="yy-mm-dd"
       />
     </div>
-    <div v-if="sleepData.isLoaded" class="mt-5">
-      <DataTable :value="sleepData.sleepList?.records" scrollable scrollHeight="480px">
-        <Column field="date" header="Дата" class="w-25rem">
-          <template #body="slotProps">
-            {{ slotProps.data.date }}
-          </template>
-        </Column>
-        <Column field="value" header="Время">
-          <template #body="slotProps">
-            {{ minuteToTime(slotProps.data.value) }}
-          </template>
-        </Column>
-        <Column>
-          <template #body="slotProps">
-            <div class="flex justify-content-end">
-              <Button
-                @click="remove(slotProps.data.id)"
-                severity="danger"
-                icon="pi pi-trash"
-                size="small"
-              />
-            </div>
-          </template>
-        </Column>
-      </DataTable>
+    <div v-if="isData">
+      <div v-if="sleepData.isLoaded" class="mt-5">
+        <DataTable :value="sleepData.sleepList?.records" scrollable scrollHeight="480px">
+          <Column field="date" header="Дата" class="w-25rem">
+            <template #body="slotProps">
+              {{ slotProps.data.date }}
+            </template>
+          </Column>
+          <Column field="value" header="Время">
+            <template #body="slotProps">
+              {{ minuteToTime(slotProps.data.value) }}
+            </template>
+          </Column>
+          <Column>
+            <template #body="slotProps">
+              <div class="flex justify-content-end">
+                <Button
+                  @click="remove(slotProps.data.id)"
+                  severity="danger"
+                  icon="pi pi-trash"
+                  size="small"
+                />
+              </div>
+            </template>
+          </Column>
+        </DataTable>
+      </div>
+      <div v-else><SleepTableSkeleton></SleepTableSkeleton></div>
     </div>
-    <div v-else><SleepTableSkeleton></SleepTableSkeleton></div>
-    <h1 class="text-primary">График</h1>
-    <div class="flex justify-content-center">
-      <Chart type="bar" :data="chartData" :options="chartOptions" class="h-30rem w-screen" />
+    <div v-else><h1 class="text-center mt-5">Пока нет данных</h1></div>
+    <div v-if="sleepData.sleepList?.totalCount ?? 0 > 0">
+      <h1 class="text-primary">График</h1>
+      <div class="flex justify-content-center">
+        <Chart type="bar" :data="chartData" :options="chartOptions" class="h-30rem w-screen" />
+      </div>
     </div>
   </div>
 </template>

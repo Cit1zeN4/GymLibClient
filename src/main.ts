@@ -27,6 +27,7 @@ import OverlayPanel from 'primevue/overlaypanel'
 import Chart from 'primevue/chart'
 import SleepTableSkeleton from './components/SleepTableSkeleton.vue'
 import Password from 'primevue/password'
+import Divider from 'primevue/divider'
 
 import App from './App.vue'
 import router from './router'
@@ -72,5 +73,6 @@ app.component('OverlayPanel', OverlayPanel)
 app.component('Chart', Chart)
 app.component('SleepTableSkeleton', SleepTableSkeleton)
 app.component('Password', Password)
+app.component('Divider', Divider)
 
 app.mount('#app')
