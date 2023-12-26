@@ -9,6 +9,7 @@ import {
 
 export const sleepStore = defineStore('sleep', () => {
   const sleepList = ref<SleepResponseResponseData>()
+  const isLoaded = ref(false)
 
   function getLastWeek(date: Date) {
     return new Date(date.getTime() - 7 * 24 * 60 * 60 * 1000)
@@ -44,6 +45,7 @@ export const sleepStore = defineStore('sleep', () => {
     dateStart: string | undefined,
     dateEnd: string | undefined
   ) {
+    isLoaded.value = false
     const client = new AppClient(OpenAPI)
 
     const response = await client.sleep.getSleep({
@@ -53,17 +55,15 @@ export const sleepStore = defineStore('sleep', () => {
       dateEnd
     })
 
-    var mapped = response.records?.map<SleepResponse>((x) => {
-      return {
-        id: x.id,
-        value: x.value,
-        date: getShortDate(new Date(x.date ?? 0))
-      }
-    })
-
     sleepList.value = response
-    sleepList.value.records = mapped
+    isLoaded.value = true
   }
 
-  return { sleepList, add, getList, getDateStr, getLastWeek }
+  async function remove(id: number) {
+    const client = new AppClient(OpenAPI)
+
+    await client.sleep.deleteSleep({ id })
+  }
+
+  return { isLoaded, sleepList, add, remove, getList, getDateStr, getLastWeek, getShortDate }
 })

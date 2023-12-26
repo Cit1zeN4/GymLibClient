@@ -25,6 +25,7 @@ import Calendar from 'primevue/calendar'
 import InputNumber from 'primevue/inputnumber'
 import OverlayPanel from 'primevue/overlaypanel'
 import Chart from 'primevue/chart'
+import SleepTableSkeleton from './components/SleepTableSkeleton.vue'
 
 import App from './App.vue'
 import router from './router'
@@ -68,5 +69,6 @@ app.component('Calendar', Calendar)
 app.component('InputNumber', InputNumber)
 app.component('OverlayPanel', OverlayPanel)
 app.component('Chart', Chart)
+app.component('SleepTableSkeleton', SleepTableSkeleton)
 
 app.mount('#app')

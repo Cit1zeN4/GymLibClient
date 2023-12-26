@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type SleepTableSkeletonVue from '@/components/SleepTableSkeleton.vue'
 import { sleepStore } from '@/stores/sleep'
 import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
@@ -57,6 +58,7 @@ const save = () => {
         closable: true,
         life: 1000
       })
+      update()
     })
     .catch(() => {
       toast.add({
@@ -76,6 +78,30 @@ const update = () => {
   })
 }
 
+const remove = (id: number) => {
+  sleepData
+    .remove(id)
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Сохранено',
+        detail: 'Выбраная запись успешно удалена',
+        closable: true,
+        life: 1000
+      })
+      update()
+    })
+    .catch(() => {
+      toast.add({
+        severity: 'error',
+        summary: 'Ошибка',
+        detail: 'Не удалось удалить указанную запись',
+        closable: true,
+        life: 3000
+      })
+    })
+}
+
 onMounted(() => {
   sleepData.getList(0, 50, weekAgoStr, todayStr).then(() => {
     chartData.value = setChartData()
@@ -90,7 +116,7 @@ const setChartData = () => {
   const documentStyle = getComputedStyle(document.documentElement)
 
   return {
-    labels: sleepData.sleepList?.records?.map((x) => x.date),
+    labels: sleepData.sleepList?.records?.map((x) => sleepData.getShortDate(new Date(x.date ?? 0))),
     datasets: [
       {
         label: 'Время сна',
@@ -224,8 +250,36 @@ const setChartOptions = () => {
         dateFormat="yy-mm-dd"
       />
     </div>
-    <div>
-      <Chart type="bar" :data="chartData" :options="chartOptions" class="h-30rem" />
+    <div v-if="sleepData.isLoaded" class="mt-5">
+      <DataTable :value="sleepData.sleepList?.records" scrollable scrollHeight="480px">
+        <Column field="date" header="Дата" class="w-25rem">
+          <template #body="slotProps">
+            {{ slotProps.data.date }}
+          </template>
+        </Column>
+        <Column field="value" header="Время">
+          <template #body="slotProps">
+            {{ minuteToTime(slotProps.data.value) }}
+          </template>
+        </Column>
+        <Column>
+          <template #body="slotProps">
+            <div class="flex justify-content-end">
+              <Button
+                @click="remove(slotProps.data.id)"
+                severity="danger"
+                icon="pi pi-trash"
+                size="small"
+              />
+            </div>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+    <div v-else><SleepTableSkeleton></SleepTableSkeleton></div>
+    <h1 class="text-primary">График</h1>
+    <div class="flex justify-content-center">
+      <Chart type="bar" :data="chartData" :options="chartOptions" class="h-30rem w-screen" />
     </div>
   </div>
 </template>
