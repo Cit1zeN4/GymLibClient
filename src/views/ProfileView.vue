@@ -79,10 +79,10 @@ function changeName() {
   }
 }
 
-function changePassword(oldPassword: string, newPassword: string) {
+function changePassword(oldPasswordparam: string, newPassword: string) {
   console.log('start')
   console.log(me.changePassword)
-  me.changePassword(oldPassword, newPassword)
+  me.changePassword(oldPasswordparam, newPassword)
     .then(() => {
       toast.add({
         severity: 'success',
@@ -91,6 +91,9 @@ function changePassword(oldPassword: string, newPassword: string) {
         closable: true,
         life: 1000
       })
+      oldPassword.value = null
+      password.value = null
+      confirmPassword.value = null
     })
     .catch((error: ApiError) => {
       if (error.status === 401)
