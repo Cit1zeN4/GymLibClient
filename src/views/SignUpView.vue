@@ -17,12 +17,7 @@ const { errors, defineField } = useForm({
       .string()
       .matches(
         /^(?=.*\d{1})(?=.*[a-z]{1})(?=.*[A-Z]{1})(?=.*[!@#$%^&*{|}?~_=+.-]{1})(?=.*[^a-zA-Z0-9])(?!.*\s).{6,64}$/,
-        'Пароль должен содержать: ' +
-          'не менее 6 символов; ' +
-          'хотя бы один неалфавитно-цифровой символ;' +
-          'хотя бы одну цифру; ' +
-          'хотя бы одну строчную букву' +
-          'хотя бы одну заглавную букву'
+        'Пароль не соответсвует требованиям'
       )
       .required('Обязательное поле'),
     confirmPassword: yup
@@ -97,10 +92,10 @@ function register() {
   <div class="flex justify-content-center align-items-center min-h-screen">
     <div class="surface-card p-4 shadow-2 border-round w-auto sm:w-8 md:w-7 lg:w-4">
       <div class="text-center mb-5">
-        <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-        <span class="text-600 font-medium line-height-3">Already have an account?</span>
+        <div class="text-900 text-3xl font-medium mb-3">Добро пожаловать!</div>
+        <span class="text-600 font-medium line-height-3">Уже есть аккаунт?</span>
         <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="toSignIn"
-          >Sing In</a
+          >Войти</a
         >
       </div>
 
@@ -122,15 +117,32 @@ function register() {
           </div>
 
           <div class="mb-3">
-            <label for="password" class="block text-900 font-medium mb-2">Password</label>
-            <InputText
+            <label for="password" class="block text-900 font-medium mb-2">Пароль</label>
+            <Password
+              toggleMask
               v-model="password"
               v-bind="passwordAttr"
-              id="password"
-              type="password"
+              weakLabel="Слишком простой"
+              mediumLabel="Норальный"
+              strongLabel="Отличный"
+              promptLabel="Введите пароль"
+              placeholder="Введите пароль"
               class="w-full mb-1"
+              inputClass="my-auto w-full"
               :class="{ 'p-invalid': errors.password }"
-            />
+            >
+              <template #footer>
+                <Divider />
+                <p class="mt-2">Требования:</p>
+                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                  <li>не менее 6 символов</li>
+                  <li>хотя бы одну цифру</li>
+                  <li>хотя бы один неалфавитно-цифровой символ</li>
+                  <li>хотя бы одну строчную букву</li>
+                  <li>хотя бы одну заглавную букву</li>
+                </ul>
+              </template>
+            </Password>
             <div>
               <small class="p-error" id="text-error">{{ errors.password }}</small>
             </div>
@@ -138,14 +150,16 @@ function register() {
 
           <div class="mb-3">
             <label for="confirm-password" class="block text-900 font-medium mb-2"
-              >Repeat password</label
+              >Подтвердите пароль</label
             >
-            <InputText
+            <Password
+              toggleMask
               v-model="confirmPassword"
               v-bind="confirmPasswordAttr"
-              id="confirm-password"
-              type="password"
-              class="w-full mb-1"
+              placeholder="Подтвердите пароль"
+              class="h-full w-full"
+              inputClass="my-auto w-full"
+              :feedback="false"
               :class="{ 'p-invalid': errors.confirmPassword }"
             />
             <div>
@@ -154,7 +168,7 @@ function register() {
           </div>
         </div>
 
-        <Button @click="register" label="Sign Up" icon="pi pi-user" class="w-full"></Button>
+        <Button @click="register" label="Продолжить" icon="pi pi-user" class="w-full"></Button>
       </div>
     </div>
   </div>

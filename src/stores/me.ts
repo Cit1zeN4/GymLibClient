@@ -20,7 +20,13 @@ export const meStore = defineStore(
       await client.user.putUserMe({ newName })
     }
 
-    return { userData, getMe, changeName }
+    async function changePassword(oldPassword: string, newPassword: string) {
+      const client = new AppClient(OpenAPI)
+
+      await client.gymLibApi.postManageInfo({ requestBody: { oldPassword, newPassword } })
+    }
+
+    return { userData, getMe, changeName, changePassword }
   },
   { persist: true }
 )

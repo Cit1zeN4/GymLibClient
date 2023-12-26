@@ -80,16 +80,16 @@ function login() {
   <div class="flex justify-content-center align-items-center min-h-screen">
     <div class="surface-card p-4 shadow-2 border-round w-auto sm:w-8 md:w-7 lg:w-4">
       <div class="text-center mb-5">
-        <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-        <span class="text-600 font-medium line-height-3">Don't have an account?</span>
+        <div class="text-900 text-3xl font-medium mb-3">Добро пожаловать</div>
+        <span class="text-600 font-medium line-height-3">Еще нет аккаунта?</span>
         <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="toSignUp"
-          >Create today!</a
+          >Создайте его сейчас!</a
         >
       </div>
 
       <div>
         <div class="mb-2">
-          <label for="email" class="block text-900 font-medium">Email</label>
+          <label for="email" class="block text-900 font-medium mb-2">Email</label>
           <InputText
             v-model="email"
             v-bind="emailAttr"
@@ -104,31 +104,23 @@ function login() {
         </div>
 
         <div class="mb-2">
-          <label for="password" class="block text-900 font-medium">Password</label>
-          <InputText
+          <label for="password" class="block text-900 font-medium mb-2">Пароль</label>
+          <Password
+            toggleMask
             v-model="password"
             v-bind="passwordAttr"
-            id="password"
-            type="password"
-            class="w-full mb-3"
-            :class="{ 'p-invalid': errors.email }"
+            placeholder="Подтвердите пароль"
+            class="h-full w-full"
+            inputClass="my-auto w-full"
+            :feedback="false"
+            :class="{ 'p-invalid': errors.password }"
           />
           <div>
             <small class="p-error" id="text-error">{{ errors.email }}</small>
           </div>
         </div>
 
-        <div class="flex align-items-center justify-content-between mb-6">
-          <div class="flex align-items-center">
-            <Checkbox v-model="checked" id="rememberme" :binary="true" class="mr-2"></Checkbox>
-            <label for="rememberme">Remember me</label>
-          </div>
-          <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
-            >Forgot password?</a
-          >
-        </div>
-
-        <Button @click="login" label="Sign In" icon="pi pi-user" class="w-full"></Button>
+        <Button @click="login" label="Sign In" icon="pi pi-user" class="w-full mt-3"></Button>
       </div>
     </div>
   </div>
