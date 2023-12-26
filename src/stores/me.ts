@@ -14,7 +14,13 @@ export const meStore = defineStore(
       userData.value = response
     }
 
-    return { userData, getMe }
+    async function changeName(newName: string) {
+      const client = new AppClient(OpenAPI)
+
+      await client.user.putUserMe({ newName })
+    }
+
+    return { userData, getMe, changeName }
   },
   { persist: true }
 )
