@@ -10,7 +10,10 @@ export const authStore = defineStore(
     async function register(email: string, password: string) {
       const client = new AppClient(OpenAPI)
 
-      const response = await client.gymLibApi.postRegister({ requestBody: { email, password } })
+      const response =
+        await client.gymLibApiVersion1000CultureNeutralPublicKeyTokenNull.postRegister({
+          requestBody: { email, password }
+        })
 
       await login(email, password)
     }
@@ -18,7 +21,7 @@ export const authStore = defineStore(
     async function login(email: string, password: string) {
       const client = new AppClient(OpenAPI)
 
-      const response = await client.gymLibApi.postLogin({
+      const response = await client.gymLibApiVersion1000CultureNeutralPublicKeyTokenNull.postLogin({
         useCookies: true,
         requestBody: { email, password }
       })

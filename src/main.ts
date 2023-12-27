@@ -28,6 +28,7 @@ import Chart from 'primevue/chart'
 import SleepTableSkeleton from './components/SleepTableSkeleton.vue'
 import Password from 'primevue/password'
 import Divider from 'primevue/divider'
+import MuscleSelector from './components/MuscleSelector.vue'
 
 import App from './App.vue'
 import router from './router'
@@ -74,5 +75,6 @@ app.component('Chart', Chart)
 app.component('SleepTableSkeleton', SleepTableSkeleton)
 app.component('Password', Password)
 app.component('Divider', Divider)
+app.component('MuscleSelector', MuscleSelector)
 
 app.mount('#app')

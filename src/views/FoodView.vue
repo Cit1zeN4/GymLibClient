@@ -353,7 +353,7 @@ const setChartOptions = () => {
             v-bind="nameAttr"
             type="text"
             placeholder="Введите название"
-            class="w-full mb-1"
+            class="w-full my-1"
             :class="{ 'p-invalid': errors.name }"
           />
           <div class="mb-3">
