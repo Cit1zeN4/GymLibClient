@@ -47,7 +47,6 @@ const hide = () => {
 }
 
 const save = () => {
-  console.log(date.value)
   sleepData
     .add(
       hour.value ?? 0,

@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { FoodEntity } from './FoodEntity';
+import type { FoodShortDto } from './FoodShortDto';
 
-export type FoodEntityResponseData = {
+export type FoodShortDtoResponseData = {
     totalCount?: number;
-    records?: Array<FoodEntity> | null;
+    records?: Array<FoodShortDto> | null;
 };

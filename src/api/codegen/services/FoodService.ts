@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateFoodRequest } from '../models/CreateFoodRequest';
-import type { FoodEntityResponseData } from '../models/FoodEntityResponseData';
 import type { FoodListRequest } from '../models/FoodListRequest';
 import type { FoodResponse } from '../models/FoodResponse';
+import type { FoodShortDtoResponseData } from '../models/FoodShortDtoResponseData';
 import type { ProductEntityResponseData } from '../models/ProductEntityResponseData';
 import type { ProductListRequest } from '../models/ProductListRequest';
 
@@ -125,14 +125,14 @@ requestBody?: ProductListRequest,
     }
 
     /**
-     * @returns FoodEntityResponseData Success
+     * @returns FoodShortDtoResponseData Success
      * @throws ApiError
      */
     public postFoodList({
 requestBody,
 }: {
 requestBody?: FoodListRequest,
-}): CancelablePromise<FoodEntityResponseData> {
+}): CancelablePromise<FoodShortDtoResponseData> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/food/list',
