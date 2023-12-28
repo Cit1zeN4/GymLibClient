@@ -239,10 +239,11 @@ const chartOptions = ref()
 
 onMounted(() => {
   productData.load(0, productTake.value, undefined)
-  foodData.load(0, 50, undefined, undefined, undefined)
-  chartData.value = setChartData()
-  chartData2.value = setChartData2()
-  chartOptions.value = setChartOptions()
+  foodData.load(0, 50, undefined, undefined, undefined).then(() => {
+    chartData.value = setChartData()
+    chartData2.value = setChartData2()
+    chartOptions.value = setChartOptions()
+  })
 })
 
 const setChartData = () => {
@@ -277,7 +278,6 @@ const setChartData = () => {
 
 const setChartData2 = () => {
   const documentStyle = getComputedStyle(document.documentElement)
-
   return {
     labels: foodData.foodList?.records?.map(
       (x) => x.name + ' ' + getShortDateTime(new Date(x.date ?? 0))
