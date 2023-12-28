@@ -14,6 +14,18 @@ function toSignIn() {
 function toSignUp() {
   router.push('/signup')
 }
+
+function toFeed() {
+  router.push('/feed')
+}
+
+function toExercise() {
+  router.push('/exercise')
+}
+
+function toProduct() {
+  router.push('/product')
+}
 </script>
 
 <template>
@@ -30,18 +42,39 @@ function toSignUp() {
               incididunt ut labore et dolore magna aliqua.
             </p>
 
+            <div class="mb-4">
+              <Button @click="toFeed" severity="info" label="Лента" type="button" class="mr-3" text>
+                <span class="material-icons-round">feed</span>
+              </Button>
+              <Button
+                @click="toExercise"
+                severity="warning"
+                label="Упражнения"
+                type="button"
+                class="mr-3"
+                text
+              >
+                <span class="material-icons-round">fitness_center</span>
+              </Button>
+              <Button
+                @click="toProduct"
+                severity="success"
+                label="Продкты"
+                type="button"
+                class="mr-3"
+                text
+              >
+                <span class="material-icons-round">restaurant</span>
+              </Button>
+            </div>
+
             <Button
               @click="toSignUp"
-              label="Sign Up"
+              label="Присоединится"
               type="button"
               class="mr-3 p-button-raised"
-            ></Button>
-            <Button
-              @click="toSignIn"
-              label="Sign In"
-              type="button"
-              class="p-button-outlined"
-            ></Button>
+            />
+            <Button @click="toSignIn" label="Войти" type="button" class="p-button-outlined" />
           </section>
         </div>
         <div class="col-12 md:col-6 overflow-hidden ltr">

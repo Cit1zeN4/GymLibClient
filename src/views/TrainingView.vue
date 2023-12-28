@@ -14,6 +14,8 @@ import type {
 import { trainingStore } from '@/stores/training'
 import { useToast } from 'primevue/usetoast'
 import { meStore } from '@/stores/me'
+import { authStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 
 interface ExerciseListItem {
   exercise: ExerciseEntity
@@ -21,8 +23,9 @@ interface ExerciseListItem {
   reps: number
 }
 
+const router = useRouter()
 const toast = useToast()
-
+const auth = authStore()
 const exerciseData = exerciseStore()
 const trainingData = trainingStore()
 const me = meStore()
@@ -254,6 +257,7 @@ const updateTraining = () => {
 }
 
 onMounted(() => {
+  if (!auth.isAuth) router.push('signin')
   exerciseData.getTags().then((res) => {
     tags.value = res
   })

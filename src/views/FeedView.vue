@@ -7,7 +7,11 @@ import { useForm } from 'vee-validate'
 import { articleStore } from '@/stores/article'
 import { useToast } from 'primevue/usetoast'
 import { meStore } from '@/stores/me'
+import { authStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const auth = authStore()
 const me = meStore()
 const articleData = articleStore()
 const toast = useToast()
@@ -133,6 +137,7 @@ onMounted(() => {
     <h1>Лента</h1>
     <div class="flex justify-content-end">
       <Button
+        v-if="auth.isAuth"
         @click="visible = true"
         label="Добвить"
         icon="pi pi-plus"

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type SleepTableSkeletonVue from '@/components/SleepTableSkeleton.vue'
+import { authStore } from '@/stores/auth'
 import { sleepStore } from '@/stores/sleep'
 import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const auth = authStore()
 const sleepData = sleepStore()
 const toast = useToast()
 
@@ -112,6 +115,7 @@ const isData = computed(() => {
 })
 
 onMounted(() => {
+  if (!auth.isAuth) router.push('signin')
   sleepData.getList(0, 50, weekAgoStr, todayStr).then(() => {
     chartData.value = setChartData()
     chartOptions.value = setChartOptions()
