@@ -31,6 +31,7 @@ import Divider from 'primevue/divider'
 import MuscleSelector from './components/MuscleSelector.vue'
 import Dropdown from 'primevue/dropdown'
 import ProgressSpinner from 'primevue/progressspinner'
+import Card from 'primevue/card'
 
 import App from './App.vue'
 import router from './router'
@@ -80,5 +81,6 @@ app.component('Divider', Divider)
 app.component('MuscleSelector', MuscleSelector)
 app.component('Dropdown', Dropdown)
 app.component('ProgressSpinner', ProgressSpinner)
+app.component('Card', Card)
 
 app.mount('#app')
