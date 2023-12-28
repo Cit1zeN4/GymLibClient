@@ -14,15 +14,15 @@ const expandedRows = ref()
 const searchText = ref<string>()
 let selected = ref<ExerciseEntity | undefined>()
 
-exerciseData.load(0, take.value, undefined)
+exerciseData.load(0, take.value, undefined, 0)
 
 function search() {
-  exerciseData.load(0, take.value, searchText.value)
+  exerciseData.load(0, take.value, searchText.value, 0)
   first.value = 0
 }
 
 function upd(event: PageState) {
-  exerciseData.load(event.first, event.rows, searchText.value)
+  exerciseData.load(event.first, event.rows, searchText.value, 0)
 }
 
 function expand() {

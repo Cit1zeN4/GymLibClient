@@ -108,10 +108,12 @@ id?: number,
 userId,
 skip,
 take,
+search,
 }: {
 userId?: number,
 skip?: number,
 take?: number,
+search?: string,
 }): CancelablePromise<TrainingSetShortDtoResponseData> {
         return this.httpRequest.request({
             method: 'GET',
@@ -120,6 +122,7 @@ take?: number,
                 'userId': userId,
                 'skip': skip,
                 'take': take,
+                'search': search,
             },
         });
     }

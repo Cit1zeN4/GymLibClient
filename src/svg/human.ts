@@ -1,3 +1,27 @@
+export enum Muscle {
+  chest = 'chest',
+  deltoid = 'deltoid',
+  trapezuis = 'trapezuis',
+  biceps = 'biceps',
+  triceps = 'triceps',
+  infraspinatus = 'infraspinatus',
+  lats = 'lats',
+  abs = 'abs',
+  'v-line-abs' = 'v-line-abs',
+  anterior = 'anterior',
+  glutes = 'glutes',
+  'front-thigh' = 'front-thigh',
+  'back-thigh' = 'back-thigh',
+  calves = 'calves',
+  shin = 'shin',
+  wrist = 'wrist'
+}
+
+export interface MuscleAssociation {
+  inner: Muscle
+  outer: string
+}
+
 const getSvg = (innerColor: string, outerColor: string): string => `<defs>
     <style>.cls-1{fill:${innerColor ? innerColor : '#b2b2b2'};}.cls-2{fill:${
       outerColor ? outerColor : '#878787'

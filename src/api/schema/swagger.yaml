@@ -1000,6 +1000,11 @@ paths:
             type: integer
             format: int32
             default: 0
+        - name: search
+          in: query
+          style: form
+          schema:
+            type: string
       responses:
         '200':
           description: Success

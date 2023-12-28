@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { getSvg } from '@/svg/human'
-import { computed, onMounted } from 'vue'
+import { getSvg, Muscle, type MuscleAssociation } from '@/svg/human'
+import { computed, onMounted, ref } from 'vue'
 
 interface MuscleProps {
   selectColor: string
   bodyColor: string
   muscleColor: string
   outerColor: string
+  association: MuscleAssociation[]
 }
 
 const props = withDefaults(defineProps<MuscleProps>(), {
@@ -16,15 +17,24 @@ const props = withDefaults(defineProps<MuscleProps>(), {
   outerColor: '#242b38'
 })
 
+const selectedMusle = ref<string>()
+
 const svg = computed(() => {
   return getSvg(props.bodyColor, props.muscleColor)
 })
+
+const emit = defineEmits(['update:modelValue'])
 
 function addHover() {
   document.querySelectorAll('svg.human g').forEach((item) => {
     var isMuscle = item.id !== 'outer-color' && item.id !== 'inner-color'
     if (isMuscle) {
+      item.addEventListener('mouseup', (e) => {
+        var finded = props.association.find((x) => x.inner === Muscle[selectedMusle.value ?? ''])
+        if (finded != undefined) emit('update:modelValue', finded.outer)
+      })
       item.addEventListener('mouseenter', (e) => {
+        selectedMusle.value = (e.target as Element).id
         var active = document.querySelector('.human-active-muscle')
         if (active) {
           active.classList.remove('human-active-muscle')
